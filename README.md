@@ -1,6 +1,8 @@
 
 
-"ODDF-Net: Multi-object segmentation in 3D retinal OCTA using optical density and disease features"
+# ODDF-Net: Multi-object segmentation in 3D retinal OCTA using optical density and disease features
+
+This work has been published at "Knowledge-Based Systems".
 https://doi.org/10.1016/j.knosys.2024.112704
 
 We propose a 3D-to-2D multi-object segmentation network based on Optical Density and disease features, which can jointly extract 2D capillaries, arteries, veins, and FAZ from 3D OCTA.

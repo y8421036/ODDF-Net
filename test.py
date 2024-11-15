@@ -163,8 +163,8 @@ def pr_curve(label_list,pred_list):
 
     
 if __name__ == '__main__':
-    restore_path = 'logs/_pth/new/6M/cla/0.825569/14.pth'
-    stage = 'cla'  # seg or cla
+    restore_path = 'logs/_pth/new/6M/seg/0.825569/255.pth'
+    stage = 'seg'  # seg or cla
     print(stage, restore_path)
 
     if stage == 'cla':

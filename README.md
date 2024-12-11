@@ -9,9 +9,9 @@ This work has been published at "Knowledge-Based Systems".
 DOI: [10.1016/j.knosys.2024.112704](https://www.sciencedirect.com/science/article/abs/pii/S0950705124013388?via%3Dihub)
 
 ## Requirements
-python=3.8.0
+python>=3.8.0
 
-torch=1.6.0
+torch>=1.6.0
 
 ## Dataset Download Link
 OCTA-500: [https://ieee-dataport.org/open-access/octa-500](https://ieee-dataport.org/open-access/octa-500)

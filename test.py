@@ -70,29 +70,6 @@ def test_net(net,device):
                 os.makedirs(path2)
             cv2.imwrite(os.path.join(path2, cubename[0]), BGR)
 
-            #--for testing disease classication------------
-            # result2 = torch.argmax(pred2, dim=1)
-            # result2 = result2[0].cpu().detach().numpy()
-            # test_pred2_list = np.append(test_pred2_list,result2)
-            # name = cubename[0]
-            # name = int(name[:-4])
-            # lb = np.argwhere(disease_lb==name)
-            # lb2_test = disease_lb[lb[0][0],1]
-            # lb2_test = np.expand_dims(lb2_test,axis=0)
-            # lb2_test = np.expand_dims(lb2_test,axis=0)
-            # test_label2_list = np.append(test_label2_list,lb2_test)
-            #--for testing disease classication------------
-
-            #--for pr curve--------------------------------
-            # pred_list.append(pred_softmax[0,:, 0, :, :]) 
-            # gt_binary = []
-            # for i in range(int(opt.n_classes)):
-            #     gt_binary.append(np.where(test_annotations==i, 1, 0))
-            # label_list.append(np.array(gt_binary))
-            #--for pr curve--------------------------------
-            
-        # pr_curve(label_list,pred_list)
-
         with open(opt.saveroot+"/metrics-seg.txt",'a') as f:
             f.write("Test_mIoU:{}".format(test_miou_sum/test_num))
             f.write("\nTest_IoU_C:{}".format(test_iou_sum[0]/test_num))
@@ -120,47 +97,6 @@ def test_net(net,device):
             f.write("\nTest_SE_F:{}".format(test_metrics_sum[3][3]/test_num))
             f.write("\nTest_SP_F:{}".format(test_metrics_sum[3][4]/test_num))
 
-        # test_cla_acc = metrics.accuracy_score(test_label2_list,test_pred2_list)
-        # test_cla_prec_micro = metrics.precision_score(test_label2_list,test_pred2_list, average='micro')
-        # test_cla_prec_macro = metrics.precision_score(test_label2_list,test_pred2_list, average='macro')
-        # test_cla_reca_micro = metrics.recall_score(test_label2_list,test_pred2_list, average='micro')
-        # test_cla_reca_macro = metrics.recall_score(test_label2_list,test_pred2_list, average='macro')
-        # test_cla_f1_micro = metrics.f1_score(test_label2_list,test_pred2_list, average='micro')
-        # test_cla_f1_macro = metrics.f1_score(test_label2_list,test_pred2_list, average='macro')
-        # with open(opt.saveroot+"/metrics-cla.txt",'a') as f:
-        #     f.write("\nTest_cla_acc:{}".format(test_cla_acc))
-        #     f.write("\nTest_cla_prec_micro:{}".format(test_cla_prec_micro))
-        #     f.write("\nTest_cla_prec_macro:{}".format(test_cla_prec_macro))
-        #     f.write("\nTest_cla_reca_micro:{}".format(test_cla_reca_micro))
-        #     f.write("\nTest_cla_reca_macro:{}".format(test_cla_reca_macro))
-        #     f.write("\nTest_cla_f1_micro:{}".format(test_cla_f1_micro))
-        #     f.write("\nTest_cla_f1_macro:{}".format(test_cla_f1_macro))
-
-
-def pr_curve(label_list,pred_list):
-    num_class = 5
-    score_array = np.array(pred_list) # 50,5,y,x
-    score_array = np.transpose(score_array,(1,0,2,3)) 
-    score_array = score_array.reshape(num_class,-1)
-    label_tensor = np.array(label_list) # 50,5,y,x
-    label_tensor = np.transpose(label_tensor,(1,0,2,3))
-    label_tensor = label_tensor.reshape(num_class,-1)
-
-    precision_dict = dict()
-    recall_dict = dict()
-    average_precision_dict = dict()
-    # for i in range(num_class):
-    #     precision_dict[i], recall_dict[i], _ = precision_recall_curve(label_tensor[i, :], score_array[i, :])
-    #     average_precision_dict[i] = average_precision_score(label_tensor[i, :], score_array[i, :])
-    #     print('class ', i, ' ap=', average_precision_dict[i])
-    precision_dict["micro"], recall_dict["micro"], _ = precision_recall_curve(label_tensor.ravel(), score_array.ravel())
-    average_precision_dict["micro"] = average_precision_score(label_tensor.ravel(), score_array.ravel(), average="micro")
-    print('ap: {0:0.5f}'.format(average_precision_dict["micro"]))
-    npy_save = 'logs/new/6M'
-    np.save(os.path.join(npy_save,'pr_prec.npy'), precision_dict["micro"])
-    np.save(os.path.join(npy_save,'pr_reca.npy'), recall_dict["micro"])
-    np.save(os.path.join(npy_save,'ap.npy'), average_precision_dict["micro"])    
-
     
 if __name__ == '__main__':
     restore_path = 'logs/_pth/new/6M/seg/0.825569/255.pth'
@@ -169,7 +105,6 @@ if __name__ == '__main__':
 
     if stage == 'cla':
         import model.ODNet_cla_leakyrelu_head2_4_fuse as ODNet
-        # import model.ODNet_cla_leakyrelu_head2_4_fuse_vis as ODNet
     elif stage == 'seg':
         import model.ODNet_seg_leakyrelu_head2_3_fuse as ODNet
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')

@@ -135,23 +135,16 @@ def train_net(net,device):
                 pred,_ = utils.split_test(test_images,net, opt.data_size, opt.train_size, opt.n_classes)
                 pred_argmax = torch.argmax(pred, dim=1)
                 result[:, :] = pred_argmax[0, 0, :, :].cpu().detach().numpy()
-
-                # 改utils中split_test输出pred2，然后和疾病label做metric
-                # acc = utils.cal_acc() #####################
-                # val_macc_sum += acc
-
                 miou,iou = utils.cal_miou(result,test_annotations)
                 val_miou_sum += miou
                 val_iou_sum += iou
             val_miou = val_miou_sum/val_num
             val_iou = val_iou_sum/val_num
-            # val_acc = val_macc_sum/val_num
             writer.add_scalar('valid_mIoU', val_miou, epoch)
             writer.add_scalar('valid_iou_F',val_iou[3], epoch)
             writer.add_scalar('valid_iou_V',val_iou[2], epoch)
             writer.add_scalar('valid_iou_A',val_iou[1], epoch)
             writer.add_scalar('valid_iou_C',val_iou[0], epoch)
-            # writer.add_scalar('valid_acc_disease',val_acc, epoch)
 
             if val_miou > best_valid_miou:
                 temp = '{:.6f}'.format(val_miou)

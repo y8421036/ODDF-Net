@@ -21,7 +21,7 @@ OCTA-500: [https://ieee-dataport.org/open-access/octa-500](https://ieee-dataport
 * Then, train the model without classification header using 'train_seg.py' and save the model parameters.
 * Next, train the full model containing classification header using 'train_cla.py' and save the model parameters.
 * Finally, use 'test.py' to run these two models on the test set to obtain quantitative and qualitative results.
-* Note: The hyperparameters related to the training and testing phases need to be set in 'base_options.py', 'train_options.py', and 'test_options.py'.
+* **Note: The hyperparameters related to the training and testing phases need to be set in 'base_options.py', 'train_options.py', and 'test_options.py'.**
 
 ## Citation
 If this code is helpful for your study, please cite:
